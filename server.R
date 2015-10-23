@@ -294,17 +294,17 @@ shinyServer(function(input, output) {
     mtext(side = 2, "Historical\nStock Index", line = 7,cex = 1.7 )
 
     # Current data
-#     plot(stock_precrash$dates,stock_precrash$precrash,type='l',lwd = 5,xlab = '',
-#        ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-#     box(lwd=5)
-#     axis(2,at=pretty(stock_precrash$precrash,n=3),
-#          labels=sciNotation(pretty(stock_precrash$precrash,n=3), 1),
-#          las=1,cex.axis=1.7,tck=0)
-#     mtext(side = 2, "Stock Index", line = 7,cex = 1.7 )
-#     points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 3,col='red')
-#     points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
-#     points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
-#            lwd = 8,col = 'deepskyblue')
+    plot(stock_precrash$dates,stock_precrash$precrash,type='l',lwd = 5,xlab = '',
+       ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=1.7)
+    box(lwd=5)
+    axis(2,at=pretty(stock_precrash$precrash,n=3),
+         labels=sciNotation(pretty(stock_precrash$precrash,n=3), 1),
+         las=1,cex.axis=1.7,tck=0)
+    mtext(side = 2, "Stock Index", line = 7,cex = 1.7 )
+    points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 3,col='red')
+    points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
+    points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
+           lwd = 8,col = 'deepskyblue')
     
     # Resisduals
     plot(stock_precrash$dates,stock_precrash$residuals,type='l',lwd = 5,xlab = '',ylab = NA,
@@ -365,23 +365,23 @@ shinyServer(function(input, output) {
          paste(c("Kendall-t = ",kendalls$spec), collapse = ""),cex = 1.5)
     
     # Autocorrelation at lag 1
-#     plot(stock_precrash$dates,ews_trends$acf_residuals,type='l',lwd = 5,xlab = '',ylab = NA,
-#          col='green',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-#     box(lwd=5)
-#     axis(2,at=pretty(ews_trends$acf_residuals,n=2),
-#          labels=format(pretty(ews_trends$acf_residuals,n=2), scientific=FALSE),
-#          las=1,cex.axis=1.7,tck=0)
-#     mtext(side = 2, 'Autocorrelation \n at Lag 1', line = 7,cex = 1.7 )
-#     mtext(side = 1, 'Date', line = 2.5,cex = 1.7 )
-#     points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
-#            ews_trends$acf_residuals[stock_precrash$N-input$kw + 1],
-#            lwd = 8,col = 'darkviolet')
-#     points(stock_precrash$dates[stock_precrash$N],
-#            ews_trends$acf_residuals[stock_precrash$N],
-#            lwd = 8,col = 'darkviolet')
-#     text(stock_precrash$dates[floor(input$rw/2)],
-#          (0.8*max(ews_trends$acf_residuals,na.rm = T)+0.2*min(ews_trends$acf_residuals,na.rm = T)),
-#          paste(c("Kendall-t = ",kendalls$acf), collapse = ""),cex = 1.5)
+    plot(stock_precrash$dates,ews_trends$acf_residuals,type='l',lwd = 5,xlab = '',ylab = NA,
+         col='green',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
+    box(lwd=5)
+    axis(2,at=pretty(ews_trends$acf_residuals,n=2),
+         labels=format(pretty(ews_trends$acf_residuals,n=2), scientific=FALSE),
+         las=1,cex.axis=1.7,tck=0)
+    mtext(side = 2, 'Autocorrelation \n at Lag 1', line = 7,cex = 1.7 )
+    mtext(side = 1, 'Date', line = 2.5,cex = 1.7 )
+    points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
+           ews_trends$acf_residuals[stock_precrash$N-input$kw + 1],
+           lwd = 8,col = 'darkviolet')
+    points(stock_precrash$dates[stock_precrash$N],
+           ews_trends$acf_residuals[stock_precrash$N],
+           lwd = 8,col = 'darkviolet')
+    text(stock_precrash$dates[floor(input$rw/2)],
+         (0.8*max(ews_trends$acf_residuals,na.rm = T)+0.2*min(ews_trends$acf_residuals,na.rm = T)),
+         paste(c("Kendall-t = ",kendalls$acf), collapse = ""),cex = 1.5)
     
     },width = 650, height = 700#900
     
