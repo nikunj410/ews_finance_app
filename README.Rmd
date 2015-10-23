@@ -1,0 +1,15 @@
+---
+title: "README"
+author: "Vishwesha Guttal"
+date: "23 October 2015"
+output: html_document
+---
+
+# Indicators of financial meltdowns 
+An easy to use web app to analyze financial market time series data and interpret indicators. 
+
+## Description
+
+## Usage
+
+##Examples
