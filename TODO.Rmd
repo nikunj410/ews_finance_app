@@ -1,0 +1,40 @@
+---
+title: "TODO"
+author: "Vishwesha Guttal"
+date: "23 October 2015"
+output: html_document
+---
+
+##To do list
+
+###Code (NG)
+* Modification to layout of app
+    * Make the sensitivity analysis optional/separate tab.
+* Current trends tab 
+    * Remove one of the historical time series graph
+    * Remove autocorrelation 
+    * Make sensitivity analysis (k-t histograms) and rolling Kendall tau graphs optional.
+* Analyze yourself tab 
+    * Same three points as current trends tab.
+* Automatic interpretation of results
+* Automatic running of sensitivity analysis
+
+###Fig Plan
+* Will depend on journal
+
+###Writing (Vishu)
+* About tab
+    * Link to source code
+    * Info on authors and citations
+    * Link to the app
+* Figure captions
+* Description tab
+    * Critical transitions
+    * EWS
+    * Summarize results from Guttal et al paper
+    * How to interpret graphs
+
+###Low priority
+* Move the code to ces server 
+
+##Completed tasks
