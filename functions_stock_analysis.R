@@ -6,7 +6,8 @@ library('KernSmooth')
 library('shiny')
 library('sfsmisc')
 library('shape')
-
+library('doParallel')
+library('foreach')
 sciNotation <- function(x, digits = 1) {
   if (length(x) > 1) {
     return(append(sciNotation(x[1]), sciNotation(x[-1])))
@@ -35,6 +36,18 @@ copypastedata = function(market,Stock,keeps)
   
 }
 
+precrashdata <- function(currentdate,Stock,bw,N)
+{
+  
+  stdindex = which(Stock$Date == currentdate)
+  indices_precrash = seq(stdindex-N+1, stdindex);
+  precrash = Stock$Close[indices_precrash]
+  smoothdata=ksmooth(1:N,precrash,kernel=c("box","normal"),bandwidth=bw) # To calculate deterministic trends in time series of stock market
+  smooth=smoothdata$y
+  residuals = precrash - smooth # Residual data
+  return(list(dates=Stock$Date[indices_precrash],precrash=precrash,smooth=smooth,residuals=residuals))
+  
+}
 
 precrashdata_Shiny <- function(enddate,currentdate,Stock,bw)
 {
@@ -53,31 +66,34 @@ precrashdata_Shiny <- function(enddate,currentdate,Stock,bw)
 }
 
 
+
 ews <- function(residuals, l_rw) 
 {
   
   #Declare arrays   
   N=length(residuals)
   var_residuals=numeric(N)
-  acf_residuals=numeric(N)
   avgspec_residuals=numeric(N)
   #Apply rolling window to residuals.
   #Residual data analysis.
-  for (i in 1:(N-l_rw+1))
+  registerDoParallel(cores = 4)
+  ### Parallelized for loop
+  r = foreach(i = 1:(N-l_rw+1)) %dopar% 
   {
-    rolldata = residuals[i:(i+l_rw-1)];
-    var_residuals[i+l_rw-1] = var(rolldata);
-    acf_residuals[i+l_rw-1] = acf(rolldata,plot=FALSE)$acf[2];
-    
-    spec_residuals = spectrum(rolldata,plot=FALSE)$spec;
-    avgspec_residuals[i+l_rw-1] = mean(spec_residuals[2:floor(l_rw/8)]);
+    c(var(residuals[i:(i+l_rw-1)]),mean(spectrum(residuals[i:(i+l_rw-1)],plot=FALSE)$spec[2:floor(l_rw/8)]))
   }
-  acf_residuals[1:l_rw]= NA
   var_residuals[1:l_rw]= NA
   avgspec_residuals[1:l_rw]= NA
   
+  for (i in 1:(N-l_rw+1))
+  {
+    var_residuals[i+l_rw-1] = r[[i]][1]
+    avgspec_residuals[i+l_rw-1] = r[[i]][2]
+  }
+
+  
   #Output results
-  ews_trends = list(acf_residuals=acf_residuals, var_residuals=var_residuals, spec_residuals=avgspec_residuals)
+  ews_trends = list(var_residuals=var_residuals, spec_residuals=avgspec_residuals)
   return(ews_trends)
   
 }
@@ -86,10 +102,9 @@ kendall_coefficient <- function(ews_trends,l_kw,k_end,N)
 {
   
   init_index= N - l_kw; 
-  kendaltau_acf = min(signif(Kendall(1:l_kw, ews_trends$acf_residuals[(init_index-k_end):(N-1-k_end)])$tau[1],3),0.999);
   kendaltau_var = min(signif(Kendall(1:l_kw, ews_trends$var_residuals[(init_index-k_end):(N-1-k_end)])$tau[1],3),0.999);
   kendaltau_avgspec = min(signif(Kendall(1:l_kw, ews_trends$spec_residuals[(init_index-k_end):(N-1-k_end)])$tau[1],3),0.999);
-  kendalls = list(acf=kendaltau_acf,  var=kendaltau_var, spec=kendaltau_avgspec)
+  kendalls = list(var=kendaltau_var, spec=kendaltau_avgspec)
   return(kendalls)
 
   
@@ -98,7 +113,7 @@ kendall_coefficient <- function(ews_trends,l_kw,k_end,N)
 sensitivity_histograms <- function(currentdate,Stock,rwrange,bwrange,N_sensitivity,l_kw,k_end)
 {
   z = 0;
-  allkendalls=array(0,dim=c(length(bwrange)*length(rwrange)*length(k_end)*length(l_kw),7))
+  allkendalls=array(0,dim=c(length(bwrange)*length(rwrange)*length(k_end)*length(l_kw),6))
   for (rw in rwrange)
   {
     for (bw in bwrange)
@@ -111,45 +126,14 @@ sensitivity_histograms <- function(currentdate,Stock,rwrange,bwrange,N_sensitivi
         { 
           z = z+1;
           kendalls = kendall_coefficient(ews_trends,kw,end,N_sensitivity)
-          allkendalls[z,] = c(rw, bw,kw,end, kendalls$acf, kendalls$var, kendalls$spec);
+          allkendalls[z,] = c(rw, bw,kw,end, kendalls$var, kendalls$spec);
         } 
       } 
     } 
   }
   
-  return(list(acf = allkendalls[,5],var = allkendalls[,6],spec = allkendalls[,7]))
+  return(list(var = allkendalls[,5],spec = allkendalls[,6]))
 }
 
 
-rolling_kendall <- function (Stock, rw, kw, N, bw)
-{
-  
-  startindex = 1;
-  endindex = length(Stock$Close)
-  
-  Nts = endindex - startindex - N + 2
-  istart = startindex - 1
-  
-  rolling = array(dim=c(Nts,4)) #store n number of 3 kendall's. 
-  print(Nts)
-  for (i in 1:Nts)
-  {
-    istart = istart + 1
-    indices = seq(istart, istart+N-1);
-    stocks = Stock$Close[indices];
-    
-    #Detrending the data
-    smoothdata=ksmooth(indices,stocks,kernel=c("box","normal"),bandwidth=bw)
-    smooth=smoothdata$y
-    
-    residuals=stocks-smooth
-    #Find historical Kendalls
-    Kendalls = kendall_coefficient(ews(residuals, rw),kw,0,N)
-    rolling[i,] = c(as.character(Stock$Date[N - 1 + i]),Kendalls$acf,Kendalls$var,Kendalls$spec)
-    
-  }  
-  
-  return(list(Date = rolling[,1]), acf = rolling[,2], var = rolling[,3], spec = rolling[,4])
-  
-}
 

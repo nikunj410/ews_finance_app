@@ -97,7 +97,7 @@ for(market in Stock_Markets)
   if (file.exists(paste(c(market,"_rolling_kt.txt"),collapse = "")) == F)
   {
     filestr = c(market,"_rolling_kt.txt")
-    write.table(rolling_kendall(Stock, rw, kw, N, bw),paste(filestr,collapse=''), sep=',',col.names=F,row.names=F)
+    write.table(rolling_kendall(Stock, rw, kw, N, bw),paste(filestr,collapse=''), sep=',',col.names=T,row.names=F)
   }
 }
 
