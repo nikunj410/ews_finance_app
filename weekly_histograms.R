@@ -66,10 +66,10 @@ Stock_Markets = c("S&P_500_USA",
 for(market in Stock_Markets)
 {
   print(market)
-  Stock = read.csv(paste(c(market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+  Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
   histograms = sensitivity_histograms(as.Date(tail(Stock$Date,1)),Stock,rwrange,bwrange,N_sensitivity,l_kw,k_end)
   
-  filestr = c(market,"_histograms.txt")
+  filestr = c("data_files/",market,"_histograms.txt")
   write.table(histograms,paste(filestr,collapse=''), sep=',',append = F,col.names=T,row.names=F)
   
 }

@@ -114,7 +114,7 @@ shinyServer(function(input, output,session) {
   
   output$summary_current_sensitivity <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
-    kt_last = tail(read.csv(paste(c(market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
+    kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
     
     if (input$sensitivity == TRUE)
 
@@ -125,7 +125,7 @@ shinyServer(function(input, output,session) {
   
   output$summary_current <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
-    kt_last = tail(read.csv(paste(c(market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
+    kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
     
     if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
     {
@@ -161,7 +161,7 @@ shinyServer(function(input, output,session) {
   output$ews_current <- renderPlot({
     
     market = Stock_Market[as.numeric(input$current_market)]
-    Stock = read.csv(paste(c(market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+    Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
     currentdate = tail(Stock$Date,1)
     
@@ -257,11 +257,11 @@ shinyServer(function(input, output,session) {
     if (input$sensitivity == TRUE)
     {
       market = Stock_Market[as.numeric(input$current_market)]
-      kt_series = read.csv(paste(c(market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE)
+      kt_series = read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE)
       kt_series$Date = as.Date(kt_series$Date)
       kt_dates_index = which(kt_series$Date <= Sys.Date() & kt_series$Date >= Sys.Date()-years(25))
       
-      kendall_histograms = read.csv(paste(c(market,"_histograms.txt"),collapse = ""),stringsAsFactors=FALSE)
+      kendall_histograms = read.csv(paste(c("data_files/",market,"_histograms.txt"),collapse = ""),stringsAsFactors=FALSE)
       par(mfrow=c(2,2),mai=c(.65,1.74,0.1,0.25))
       # Variance kenall time series
       plot(kt_series$Date[kt_dates_index],kt_series$var[kt_dates_index],type='l', ylim = c(-1,1),
@@ -309,7 +309,7 @@ shinyServer(function(input, output,session) {
   ########                       ########
   output$summary_analyse <- renderText({ 
     market = Stock_Market[as.numeric(input$market)]
-    kt_last = tail(read.csv(paste(c(market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
+    kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
     if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
     {
       
@@ -341,7 +341,7 @@ shinyServer(function(input, output,session) {
   output$ews_finance <- renderPlot({
 
     market = Stock_Market[as.numeric(input$market)]
-    Stock = read.csv(paste(c(market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+    Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
     currentdate = tail(Stock$Date,1)
    

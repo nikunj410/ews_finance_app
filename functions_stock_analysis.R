@@ -31,7 +31,7 @@ copypastedata = function(market,Stock,keeps)
     Stock = Stock[- del_ind ]
   }
   Stock = Stock[complete.cases(Stock),]
-  filestr = c(market,"_data.txt")
+  filestr = c("data_files/",market,"_data.txt")
   write.table(Stock,paste(filestr,collapse=''), sep=',',col.names=T,row.names=F)
   
 }

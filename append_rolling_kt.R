@@ -59,12 +59,12 @@ Stock_Markets = c("S&P_500_USA",
 for(market in Stock_Markets)
 {
   print(market)
-  Stock = read.csv(paste(c(market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+  Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
   Stock$Date = as.Date(Stock$Date)
   
-  if (file.exists(paste(c(market,"_rolling_kt.txt"),collapse = "")) == T)
+  if (file.exists(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = "")) == T)
   {  
-    rolling_kt = read.csv(paste(c(market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE)
+    rolling_kt = read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE)
     rolling_kt$Date = as.Date(rolling_kt$Date)
     stock_tail_date = tail(Stock$Date,1)
     rolling_tail_date = tail(rolling_kt$Date,1)
@@ -73,7 +73,7 @@ for(market in Stock_Markets)
     if (length(index) != 0)
     {
       Nts = length(index)
-      Append = array(dim=c(Nts,4))
+      Append = array(dim=c(Nts,3))
       
       istart = index[1] - 1
       for(k in 1:Nts)
@@ -85,18 +85,18 @@ for(market in Stock_Markets)
         smooth=smoothdata$y
         residuals=stocks-smooth
         Kendalls = kendall_coefficient(ews(residuals, rw),kw,0,N)
-        Append[k,] = c(as.character(Stock$Date[istart]),Kendalls$acf,Kendalls$var,Kendalls$spec)
+        Append[k,] = c(as.character(Stock$Date[istart]),Kendalls$var,Kendalls$spec)
         
       }
       
-      filestr = c(market,"_rolling_kt.txt")
+      filestr = c("data_files/",market,"_rolling_kt.txt")
       write.table(Append,paste(filestr,collapse=''), sep=',',append = T,col.names=F,row.names=F)
     }
   }
   
-  if (file.exists(paste(c(market,"_rolling_kt.txt"),collapse = "")) == F)
+  if (file.exists(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = "")) == F)
   {
-    filestr = c(market,"_rolling_kt.txt")
+    filestr = c("data_files/",market,"_rolling_kt.txt")
     write.table(rolling_kendall(Stock, rw, kw, N, bw),paste(filestr,collapse=''), sep=',',col.names=T,row.names=F)
   }
 }
