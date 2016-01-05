@@ -208,7 +208,7 @@ print(market)
 
 market = c(Stock_Markets[25])
 Stock=Quandl("ZAGREBSE/CROBEX", authcode="UE_H66ZRgM7n_4wMs-DQ")
-keeps <- c("Date","Index")
+keeps <- c("Date","Value")
 copypastedata(market,Stock,keeps)
 print(market)
 
@@ -298,7 +298,7 @@ print(market)
 
 market = c(Stock_Markets[40])
 Stock=Quandl("LJUBSE/INDEX", authcode="UE_H66ZRgM7n_4wMs-DQ")
-keeps <- c("Date","Index")
+keeps <- c("Date","Value")
 copypastedata(market,Stock,keeps)
 print(market)
 

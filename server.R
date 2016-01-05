@@ -173,81 +173,46 @@ shinyServer(function(input, output,session) {
     
     # http://www.r-bloggers.com/labeling-the-vertical-axis-in-r-plots/
     ### down left up right 
-    par(mfrow=c(2,2),mai=c(.65,1.74,0.1,0.25))
-    
+    par(mfrow=c(2,2),mai=c(.65,1.5,0.1,0.25))
+
     # Historical data
-    plot(Stock,type='l',lwd = 4,xlab = '',ylab = NA,
-         col='black',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
+    axis_font = 1.4
+    x_dist = 2.2
+    y_dist = 5.5
+    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
     points(curr_stock_precrash$dates,curr_stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(curr_stock_precrash$dates[1],curr_stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(curr_stock_precrash$dates[curr_stock_precrash$N],curr_stock_precrash$smooth[curr_stock_precrash$N],
            lwd = 8,col = 'deepskyblue')
-    box(lwd=5)
-    axis(2,at=pretty(Stock$Close,n=3),
-         labels=sciNotation(pretty(Stock$Close,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, "Historical\nStock Index", line = 7,cex = 1.7 )
-    
-    
+
     # Resisduals
-    plot(curr_stock_precrash$dates,curr_stock_precrash$residuals,type='l',lwd = 5,xlab = '',ylab = NA,
-         col='blue',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
+    plot_timeseries(curr_stock_precrash$dates,curr_stock_precrash$residuals, "blue",axis_font, " ",
+                    "Residuals", 2,F,x_dist,y_dist)
     axis(2,at=pretty(curr_stock_precrash$residuals,n=2),
-         labels=format(pretty(curr_stock_precrash$residuals,n=2), scientific=FALSE),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, 'Residuals', line = 7,cex = 1.7 )
-    Arrows(curr_stock_precrash$dates[1], 0.7*min(curr_stock_precrash$residuals),
-           curr_stock_precrash$dates[rw], 0.7*min(curr_stock_precrash$residuals),
-           code = 3,arr.length = 0.5, col = "black", lwd = 3, arr.type = "T")
-    text(curr_stock_precrash$dates[floor(rw/2)],0.7*min(curr_stock_precrash$residuals)
-         ,expression(l[rw]),cex = 2,pos = 1,offset = 0.4)
+         labels=format(pretty(curr_stock_precrash$residuals,n=2), scientific=F),
+         las=1,cex.axis=1.4,tck=0)
+    draw_rw_arrow(curr_stock_precrash$dates,curr_stock_precrash$residuals,rw,1.5)
+
     
     # Variance
-    plot(curr_stock_precrash$dates,ews_trends$var_residuals,type='l',lwd = 5,xlab= '',ylab = NA,
-         col='chartreuse4',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
-    axis(2,at=pretty(ews_trends$var_residuals,n=3),
-         labels=sciNotation(pretty(ews_trends$var_residuals,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, "Variance", line = 7,cex = 1.7 )
+    plot_timeseries(curr_stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
+                    axis_font, "Date", "Variance", 2,T,x_dist,y_dist)
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kw-kend + 1],
-           ews_trends$var_residuals[curr_stock_precrash$N-kw-kend + 1],
-           lwd = 8,col = 'darkviolet')
+           ews_trends$var_residuals[curr_stock_precrash$N-kw-kend + 1],lwd = 8,col = 'darkviolet')
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kend],
-           ews_trends$var_residuals[curr_stock_precrash$N-kend],
-           lwd = 8,col = 'darkviolet')
-    text(curr_stock_precrash$dates[floor(rw/2)],
-         (0.8*max(ews_trends$var_residuals,na.rm = T)+0.2*min(ews_trends$var_residuals,na.rm = T)),
-         paste(c("Kendall-tau = ",kendalls$var), collapse = ""),cex = 1.5)
-    mtext(side = 1, 'Date', line = 3,cex = 1.7 )
+           ews_trends$var_residuals[curr_stock_precrash$N-kend],lwd = 8,col = 'darkviolet')
+    kendall_text(curr_stock_precrash$dates,ews_trends$var_residuals,rw,kendalls$var, 1.2)
+
     
     # Power Spectrum
-    plot(curr_stock_precrash$dates,ews_trends$spec_residuals,type='l',lwd = 5,xlab = NA, ylab = NA,
-         col='deeppink',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
-    axis(2,at=pretty(ews_trends$spec_residuals,n=3),
-         labels=sciNotation(pretty(ews_trends$spec_residuals,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, 'Power\nSpectrum ', line = 7,cex = 1.7 )
+    plot_timeseries(curr_stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
+                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kw-kend + 1],
-           ews_trends$spec_residuals[curr_stock_precrash$N-kw-kend + 1],
-           lwd = 8,col = 'darkviolet')
+           ews_trends$spec_residuals[curr_stock_precrash$N-kw-kend + 1],lwd = 8,col = 'darkviolet')
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kend],
-           ews_trends$spec_residuals[curr_stock_precrash$N-kend],
-           lwd = 8,col = 'darkviolet')
-    Arrows(curr_stock_precrash$dates[curr_stock_precrash$N - kend],
-           (1-0.8)*max(ews_trends$spec_residuals,na.rm = T) + 0.8* min(ews_trends$spec_residuals,na.rm = T),
-           curr_stock_precrash$dates[curr_stock_precrash$N - kend - kw +1],
-           (1-0.8)*max(ews_trends$spec_residuals,na.rm = T) + 0.8* min(ews_trends$spec_residuals,na.rm = T),
-           code = 3,arr.length = 0.5, col = "black", lwd = 3, arr.type = "T")
-    text(curr_stock_precrash$dates[floor((curr_stock_precrash$N - kend)-kw/2)],
-         (1-0.8)*max(ews_trends$spec_residuals,na.rm = T) + 0.8* min(ews_trends$spec_residuals,na.rm = T),
-         expression(l[kw]),cex = 2,pos = 1,offset = 0.4)
-    text(curr_stock_precrash$dates[floor(rw/2)],
-         (0.8*max(ews_trends$spec_residuals,na.rm = T)+0.2*min(ews_trends$spec_residuals,na.rm = T)),
-         paste(c("Kendall-t = ",kendalls$spec), collapse = ""),cex = 1.5)
-    mtext(side = 1, 'Date', line = 3,cex = 1.7 )
+           ews_trends$spec_residuals[curr_stock_precrash$N-kend],lwd = 8,col = 'darkviolet')
+    draw_kw_arrow(curr_stock_precrash$dates,ews_trends$spec_residuals,curr_stock_precrash$N,kw,kend,1.5)
+    kendall_text(curr_stock_precrash$dates,ews_trends$spec_residuals,rw,kendalls$spec, 1.2)
       
   }
   )
@@ -256,50 +221,32 @@ shinyServer(function(input, output,session) {
     
     if (input$sensitivity == TRUE)
     {
+      axis_font = 1.4
+      x_dist=2.2
+      y_dist = 4.5
       market = Stock_Market[as.numeric(input$current_market)]
       kt_series = read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE)
       kt_series$Date = as.Date(kt_series$Date)
       kt_dates_index = which(kt_series$Date <= Sys.Date() & kt_series$Date >= Sys.Date()-years(25))
       
-      kendall_histograms = read.csv(paste(c("data_files/",market,"_histograms.txt"),collapse = ""),stringsAsFactors=FALSE)
-      par(mfrow=c(2,2),mai=c(.65,1.74,0.1,0.25))
+      kendall_histograms = read.csv(paste(c("data_files/",market,"_histograms.txt"),collapse = ""),
+                                    stringsAsFactors=FALSE)
+      par(mfrow=c(2,2),mai=c(.65,1.4,0.1,0.25))
       # Variance kenall time series
-      plot(kt_series$Date[kt_dates_index],kt_series$var[kt_dates_index],type='l', ylim = c(-1,1),
-           lwd = 5,xlab = '',ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-      points(kt_series$Date[kt_dates_index],rep.int(0.9, times = length(kt_dates_index)), type = 'l',
-             col ='red', lwd = 3, ylim = c(-1,1))
-      box(lwd=5)
-      axis(2,las=1,cex.axis=1.7,tck=0)
-      mtext(side = 2, '  Rolling \n Kendall-t', line = 7,cex = 1.7 )
-      mtext(side = 1, 'Date', line = 3,cex = 1.7 )
+      rolling_kt_plot(kt_series$Date[kt_dates_index],kt_series$var[kt_dates_index],"Date",
+                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist)
       
       # Power spectrum kenall time series
-      plot(kt_series$Date[kt_dates_index],kt_series$spec[kt_dates_index],type='l', ylim = c(-1,1),
-           lwd = 5,xlab = '',ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-      points(kt_series$Date[kt_dates_index],rep.int(0.9, times = length(kt_dates_index)), type = 'l',
-             col ='red', lwd = 3, ylim = c(-1,1))
-      box(lwd=5)
-      axis(2,las=1,cex.axis=1.7,tck=0)
-      mtext(side = 1, 'Date', line = 3,cex = 1.7 )
-      
+      rolling_kt_plot(kt_series$Date[kt_dates_index],kt_series$spec[kt_dates_index],"Date",
+                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist)
+
       # Variance histograms
-      h = hist(kendall_histograms$var,breaks = seq(-1,1, by = 0.1),plot=F);
-      h$counts = h$counts/sum(h$counts)
-      plot(h, col="grey", ylim  = c(0,1), xlab = '',ylab = NA,yaxt = 'n', 
-           cex.lab = 2, cex.axis=1.7,xlim = c(-1,1), main ="")
-      box(lwd=5)
-      axis(2,las=1,cex.axis=1.7,tck=0)
-      mtext(side = 2, "Normalized \n Frequency", line = 7,cex = 1.7 )
-      mtext(side = 1, 'Kendall-Tau', line = 3,cex = 1.7 )
+      kendall_histogram_plot(kendall_histograms$var,axis_font,'Kendall-Tau',
+                             "Normalized \n Frequency",x_dist,y_dist)
       
       # Power spectrum histograms
-      h = hist(kendall_histograms$spec,breaks = seq(-1,1, by = 0.1),plot=F);
-      h$counts = h$counts/sum(h$counts)
-      plot(h, col="grey", ylim  = c(0,1), xlab = '',ylab = NA,yaxt = 'n', 
-           cex.lab = 2, cex.axis=1.7,xlim = c(-1,1), main ="")
-      box(lwd=5)
-      axis(2,las=1,cex.axis=1.7,tck=0)
-      mtext(side = 1, 'Kendall-Tau', line = 3,cex = 1.7 )
+      kendall_histogram_plot(kendall_histograms$spec,axis_font,'Kendall-Tau',
+                             "Normalized \n Frequency",x_dist,y_dist)
     }
     
   })
@@ -354,81 +301,42 @@ shinyServer(function(input, output,session) {
     # http://www.r-bloggers.com/labeling-the-vertical-axis-in-r-plots/
     ### down left up right 
     par(mfrow=c(4,1),mai=c(.5,1.5,0.1,0.2))
+    axis_font = 1.7
+    x_dist = 2.8
+    y_dist = 7
     
     # Historical data
-    plot(Stock,type='l',lwd = 4,xlab = '',ylab = NA,
-         col='black',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
+    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
     points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
            lwd = 8,col = 'deepskyblue')
-    box(lwd=5)
-    axis(2,at=pretty(Stock$Close,n=3),
-         labels=sciNotation(pretty(Stock$Close,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, "Historical\nStock Index", line = 7,cex = 1.7 )
 
     # Resisduals
-    plot(stock_precrash$dates,stock_precrash$residuals,type='l',lwd = 5,xlab = '',ylab = NA,
-         col='blue',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
-    axis(2,at=pretty(stock_precrash$residuals,n=2),
-         labels=format(pretty(stock_precrash$residuals,n=2), scientific=FALSE),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, 'Residuals', line = 7,cex = 1.7 )
-    Arrows(stock_precrash$dates[1], 0.7*min(stock_precrash$residuals),
-           stock_precrash$dates[input$rw], 0.7*min(stock_precrash$residuals),
-           code = 3,arr.length = 0.5, col = "black", lwd = 3, arr.type = "T")
-    text(stock_precrash$dates[floor(input$rw/2)],0.7*min(stock_precrash$residuals)
-         ,expression(l[rw]),cex = 2,pos = 1,offset = 0.4)
+    plot_timeseries(stock_precrash$dates,stock_precrash$residuals, "blue",axis_font, " ",
+                    "Residuals", 2,F,x_dist,y_dist)
+    draw_rw_arrow(stock_precrash$dates,stock_precrash$residuals,input$rw,2)
     
     # Variance
-    plot(stock_precrash$dates,ews_trends$var_residuals,type='l',lwd = 5,xlab= '',ylab = NA,
-         col='chartreuse4',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
-    axis(2,at=pretty(ews_trends$var_residuals,n=3),
-         labels=sciNotation(pretty(ews_trends$var_residuals,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, "Variance", line = 7,cex = 1.7 )
+    plot_timeseries(stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
+                    axis_font, "Date", "Variance", 2,T,x_dist,y_dist)
     points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
-           ews_trends$var_residuals[stock_precrash$N-input$kw + 1],
-           lwd = 8,col = 'darkviolet')
+           ews_trends$var_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
     points(stock_precrash$dates[stock_precrash$N],
-           ews_trends$var_residuals[stock_precrash$N],
-           lwd = 8,col = 'darkviolet')
-    Arrows(stock_precrash$dates[stock_precrash$N ],
-           (1-0.8)*max(ews_trends$var_residuals,na.rm = T) + 0.8* min(ews_trends$var_residuals,na.rm = T),
-           stock_precrash$dates[stock_precrash$N  - input$kw +1],
-           (1-0.8)*max(ews_trends$var_residuals,na.rm = T) + 0.8* min(ews_trends$var_residuals,na.rm = T),
-           code = 3,arr.length = 0.5, col = "black", lwd = 3, arr.type = "T")
-    text(stock_precrash$dates[floor((stock_precrash$N )-input$kw/2)],
-         (1-0.8)*max(ews_trends$var_residuals,na.rm = T) + 0.8* min(ews_trends$var_residuals,na.rm = T),
-         expression(l[kw]),cex = 2,pos = 1,offset = 0.4)
-    text(stock_precrash$dates[floor(input$rw/2)],
-         (0.8*max(ews_trends$var_residuals,na.rm = T)+0.2*min(ews_trends$var_residuals,na.rm = T)),
-         paste(c("Kendall-t = ",kendalls$var), collapse = ""),cex = 1.5)
+           ews_trends$var_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
+    draw_kw_arrow(stock_precrash$dates,ews_trends$var_residuals,stock_precrash$N,input$kw,kend,2)
+    kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$spec, 1.5)
         
     # Power Spectrum
-    plot(stock_precrash$dates,ews_trends$spec_residuals,type='l',lwd = 5,xlab = NA, ylab = NA,
-         col='deeppink',yaxt = 'n',cex.lab = 2,cex.axis=1.7)
-    box(lwd=5)
-    axis(2,at=pretty(ews_trends$spec_residuals,n=3),
-         labels=sciNotation(pretty(ews_trends$spec_residuals,n=3), 1),
-         las=1,cex.axis=1.7,tck=0)
-    mtext(side = 2, 'Power\nSpectrum ', line = 7,cex = 1.7 )
+    plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
+                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
     points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
-           ews_trends$spec_residuals[stock_precrash$N-input$kw + 1],
-           lwd = 8,col = 'darkviolet')
+           ews_trends$spec_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
     points(stock_precrash$dates[stock_precrash$N],
-           ews_trends$spec_residuals[stock_precrash$N],
-           lwd = 8,col = 'darkviolet')
-    text(stock_precrash$dates[floor(input$rw/2)],
-         (0.8*max(ews_trends$spec_residuals,na.rm = T)+0.2*min(ews_trends$spec_residuals,na.rm = T)),
-         paste(c("Kendall-t = ",kendalls$spec), collapse = ""),cex = 1.5)
-    mtext(side = 1, 'Date', line = 2.7,cex = 1.7 )
+           ews_trends$spec_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
+    kendall_text(stock_precrash$dates,ews_trends$spec_residuals,input$rw,kendalls$spec, 1.5)
     
-
-    },width = 450, height = 700
+    }
     
     )
 })

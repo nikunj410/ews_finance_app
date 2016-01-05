@@ -135,5 +135,60 @@ sensitivity_histograms <- function(currentdate,Stock,rwrange,bwrange,N_sensitivi
   return(list(var = allkendalls[,5],spec = allkendalls[,6]))
 }
 
+plot_timeseries <- function(x,y,colour,axis_font,x_label,y_label, y_points,flag,x_dist,y_dist)
+{
+  plot(x,y,type='l',lwd = 4,xlab = '',ylab = NA,
+       col=colour,yaxt = 'n',cex.lab = 2,cex.axis = axis_font)
+  box(lwd=5)
+  if (flag == T)
+  {
+    axis(2,at=pretty(y,n=y_points),labels=sciNotation(pretty(y,n=y_points), 1),las=1,cex.axis=axis_font,tck=0)
+  }
+  
+  mtext(side = 2, y_label, line = y_dist,cex = 1.4 )
+  mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+}
 
+draw_rw_arrow <- function(x,y,rw,text_font)
+{
+  Arrows(x[1], 0.7*min(y),x[rw], 0.7*min(y),code = 3,arr.length = 0.5, col = "black", lwd = 3, arr.type = "T")
+  text(x[floor(rw/2)],0.7*min(y),expression(l[rw]),cex = text_font,pos = 1,offset = 0.4)
+}
 
+draw_kw_arrow <- function(x,y,N,kw,kend,text_font)
+{
+  Arrows(x[N - kend],(1-0.8)*max(y,na.rm = T) + 0.8* min(y,na.rm = T),x[N - kend - kw +1],
+         (1-0.8)*max(y,na.rm = T) + 0.8* min(y,na.rm = T),code = 3,arr.length = 0.5, col = "black",
+         lwd = 3, arr.type = "T")
+  text(x[floor((N - kend)-kw/2)],(1-0.8)*max(y,na.rm = T) + 0.8* min(y,na.rm = T),expression(l[kw]),
+       cex = text_font,pos = 1,offset = 0.4)
+}
+
+kendall_text<- function(x,y,rw,kendall_value, kendall_font)
+{
+  text(x[floor(rw/2)],
+      (0.8*max(y,na.rm = T)+0.2*min(y,na.rm = T)),
+      paste(c("Kendall-t = ",kendall_value), collapse = ""),cex = kendall_font)  
+}
+
+rolling_kt_plot<- function(x,y,x_label,y_label,axis_font,x_dist,y_dist)
+{
+  plot(x,y,type='l', ylim = c(-1,1),lwd = 5,xlab = '',ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=axis_font)
+  points(x,rep.int(0.9, times = length(x)), type = 'l',col ='red', lwd = 3, ylim = c(-1,1))
+  box(lwd=5)
+  axis(2,las=1, at = c(-1, 0, 1), cex.axis=axis_font,tck=0)
+  mtext(side = 2,y_label, line = y_dist,cex = 1.4 )
+  mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+}
+
+kendall_histogram_plot<-function(x,axis_font,x_label,y_label,x_dist,y_dist)
+{
+  h = hist(x,breaks = seq(-1,1, by = 0.1),plot=F);
+  h$counts = h$counts/sum(h$counts)
+  plot(h, col="grey", ylim  = c(0,1), xlab = '',ylab = NA,yaxt = 'n', 
+       cex.lab = 2, cex.axis=axis_font,xlim = c(-1,1), main ="")
+  box(lwd=5)
+  axis(2,las=1, at = c(0,0.5,1), cex.axis=axis_font,tck=0)
+  mtext(side = 2, y_label, line = y_dist,cex = 1.4 )
+  mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+}

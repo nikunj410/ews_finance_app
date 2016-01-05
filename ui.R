@@ -111,14 +111,13 @@ shinyUI
                                                  ),
       selected = 1, width  = 440),
       verbatimTextOutput("summary_current"),
-      checkboxInput("sensitivity", label = "Chick here to see sensitivity analysis", value = FALSE),
+      checkboxInput("sensitivity", label = "Click here to see sensitivity analysis", value = FALSE),
       verbatimTextOutput("summary_current_sensitivity")),
       column(8,
 
-         plotOutput("ews_current", width = 940, height = 370),
-         plotOutput("sensitivity_plot", width = 940, height = 370)
-         
-        
+         plotOutput("ews_current", width = 730, height = 370),
+         plotOutput("sensitivity_plot", width = 730, height = 370)
+
       )
     )
    ),
@@ -213,8 +212,7 @@ shinyUI
      ),
      column
      ( 4,
-      plotOutput("ews_finance")
-      
+      plotOutput("ews_finance",width = 361, height = 700)
      ),
      column
      ( 4, 
