@@ -1,4 +1,5 @@
-#Contains all functions to analyze time series of stock markets. 
+#Code written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
+
 library('lubridate')
 library('moments')
 library('Kendall')
@@ -65,8 +66,6 @@ precrashdata_Shiny <- function(enddate,currentdate,Stock,bw)
   
 }
 
-
-
 ews <- function(residuals, l_rw) 
 {
   
@@ -90,7 +89,6 @@ ews <- function(residuals, l_rw)
     var_residuals[i+l_rw-1] = r[[i]][1]
     avgspec_residuals[i+l_rw-1] = r[[i]][2]
   }
-
   
   #Output results
   ews_trends = list(var_residuals=var_residuals, spec_residuals=avgspec_residuals)
@@ -106,7 +104,6 @@ kendall_coefficient <- function(ews_trends,l_kw,k_end,N)
   kendaltau_avgspec = min(signif(Kendall(1:l_kw, ews_trends$spec_residuals[(init_index-k_end):(N-1-k_end)])$tau[1],3),0.999);
   kendalls = list(var=kendaltau_var, spec=kendaltau_avgspec)
   return(kendalls)
-
   
 }
 
@@ -135,6 +132,7 @@ sensitivity_histograms <- function(currentdate,Stock,rwrange,bwrange,N_sensitivi
   return(list(var = allkendalls[,5],spec = allkendalls[,6]))
 }
 
+### Ploting
 plot_timeseries <- function(x,y,colour,axis_font,x_label,y_label, y_points,flag,x_dist,y_dist)
 {
   plot(x,y,type='l',lwd = 4,xlab = '',ylab = NA,

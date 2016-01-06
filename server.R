@@ -1,4 +1,4 @@
-#Written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
+#Code written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
@@ -60,58 +60,6 @@ shinyServer(function(input, output,session) {
                    "Milano_Italia_Borsa_Italy"
   )
   
-  Stock_Index = c("S&P 500",
-                   "NASDAQ Composite Index",
-                   "Dow Jones Industrial Average USA",
-                   "New_York_Stock_Exchange_USA",
-                   "Russell_1000_Index_USA",
-                   "Wilshire_5000_Index_USA",
-                   "S&P_TSX_Composite_Index_Canada",
-                   "Mexbol_IPC_Index_Mexico",
-                   "Bovespa_Index_Brazil",
-                   "MERVAL_Index_Argentina",
-                   "DAX_Index_Germany",
-                   "CAC_40_Index_France",
-                   "RTSI_Index_Russia",
-                   "IBEX_35_Index_Spain",
-                   "ATX_Index_Austria",
-                   "Euronext_BEL_20_Index_Belgium",
-                   "CROBEX_Index_Croatia",
-                   "PS_Index_Czech_Republic",
-                   "OMX_Copenhagen_20_Index_Denmark",
-                   "OMX_Tallinn_Index_Estonia",
-                   "OMX_Helsinki_25_Index_Finland",
-                   "Athens_Composite_Index_Greece",
-                   "BUX_Blue_Chip_Index_Hungary",
-                   "OMX_Iceland_All_Share_Index_Iceland",
-                   "OMX_Riga_Index_Latvia",
-                   "OMX_Vilnius_Index_Lithuania",
-                   "Lux_General_Index_Luxembourg",
-                   "AEX_Amsterdam_Index_Netherlands",
-                   "OMX_Oslo_20_Index_Norway",
-                   "BET_Index_Romania",
-                   "BELEX_15_Index_Serbia",
-                   "SBITOP_Index_Slovenia",
-                   "OMX_Stockholm_30_Index_Sweden",
-                   "Swiss_Market_Index_Switzerland",
-                   "UX_Index_Ukraine",
-                   "Shanghai_Composite_Index_China",
-                   "Hang_Seng_Index_China",
-                   "Nikkei_225_Index_Japan",
-                   "BSE_Sensex_India",
-                   "KOSPI_Composite_Index_South_Korea",
-                   "Jakarta_Composite_Index_Indonesia",
-                   "Amman_General_Index_Jordan",
-                   "Straits_Times_Index_Singapore",
-                   "Colombo_All_Shares_Index_Sri_Lanka",
-                   "Taiwan_Weighted_Index_Taiwan",
-                   "All_Ordinaries_Index_Australia",
-                   "NZSE_50_Index_New_Zealand",
-                   "Johannesburg_Stock_Exchange_South_Africa",
-                   "Milano_Italia_Borsa_Italy"
-  )
-  
-  
   output$summary_current_sensitivity <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
@@ -163,7 +111,6 @@ shinyServer(function(input, output,session) {
     market = Stock_Market[as.numeric(input$current_market)]
     Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
-    currentdate = tail(Stock$Date,1)
     
     curr_stock_precrash = precrashdata_Shiny(Sys.Date()-years(4),Sys.Date(),Stock,bw);
     ews_trends = ews(curr_stock_precrash$residuals, rw)
@@ -290,7 +237,6 @@ shinyServer(function(input, output,session) {
     market = Stock_Market[as.numeric(input$market)]
     Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
-    currentdate = tail(Stock$Date,1)
    
     stock_precrash = precrashdata_Shiny(input$date-years(4),input$date,Stock,input$bw);
     ews_trends = ews(stock_precrash$residuals, input$rw)
@@ -311,12 +257,10 @@ shinyServer(function(input, output,session) {
     points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
            lwd = 8,col = 'deepskyblue')
-
     # Resisduals
     plot_timeseries(stock_precrash$dates,stock_precrash$residuals, "blue",axis_font, " ",
                     "Residuals", 2,F,x_dist,y_dist)
     draw_rw_arrow(stock_precrash$dates,stock_precrash$residuals,input$rw,2)
-    
     # Variance
     plot_timeseries(stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
                     axis_font, "Date", "Variance", 2,T,x_dist,y_dist)
@@ -326,7 +270,6 @@ shinyServer(function(input, output,session) {
            ews_trends$var_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
     draw_kw_arrow(stock_precrash$dates,ews_trends$var_residuals,stock_precrash$N,input$kw,kend,2)
     kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$spec, 1.5)
-        
     # Power Spectrum
     plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
                     axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
@@ -336,7 +279,58 @@ shinyServer(function(input, output,session) {
            ews_trends$spec_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
     kendall_text(stock_precrash$dates,ews_trends$spec_residuals,input$rw,kendalls$spec, 1.5)
     
-    }
+    })
+  
+  output$Analyze_yourself <- downloadHandler(
     
-    )
+    filename = function(){
+      paste(Stock_Market[as.numeric(input$market)],"_date_",input$date,"_bw_",input$bw,"_rw_",input$rw,"_kw_",input$kw,".pdf",sep="")
+    },
+    content = function(file){
+      market = Stock_Market[as.numeric(input$market)]
+      Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+      Stock$Date = as.Date(Stock$Date)
+      
+      stock_precrash = precrashdata_Shiny(input$date-years(4),input$date,Stock,input$bw);
+      ews_trends = ews(stock_precrash$residuals, input$rw)
+      kendalls = kendall_coefficient(ews_trends,input$kw,0,stock_precrash$N)
+      
+      ############# Plotting ##########
+      axis_font = 1.7
+      x_dist = 2.8
+      y_dist = 7
+      
+      pdf(file,5,10)
+      par(mfrow=c(4,1),mai=c(.5,1.5,0.1,0.2))
+      # Historical data
+      plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
+      points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
+      points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
+      points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
+             lwd = 8,col = 'deepskyblue')
+      # Resisduals
+      plot_timeseries(stock_precrash$dates,stock_precrash$residuals, "blue",axis_font, " ",
+                      "Residuals", 2,F,x_dist,y_dist)
+      draw_rw_arrow(stock_precrash$dates,stock_precrash$residuals,input$rw,2)
+      # Variance
+      plot_timeseries(stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
+                      axis_font, "Date", "Variance", 2,T,x_dist,y_dist)
+      points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
+             ews_trends$var_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
+      points(stock_precrash$dates[stock_precrash$N],
+             ews_trends$var_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
+      draw_kw_arrow(stock_precrash$dates,ews_trends$var_residuals,stock_precrash$N,input$kw,kend,2)
+      kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$spec, 1.5)
+      # Power Spectrum
+      plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
+                      axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
+      points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
+             ews_trends$spec_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
+      points(stock_precrash$dates[stock_precrash$N],
+             ews_trends$spec_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
+      kendall_text(stock_precrash$dates,ews_trends$spec_residuals,input$rw,kendalls$spec, 1.5)
+      dev.off()
+    }
+  )
+  
 })

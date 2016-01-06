@@ -1,4 +1,4 @@
-#Written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
+#Code written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
 
 # Define UI for application that draws a histogram
 source("functions_stock_analysis.R")
@@ -188,10 +188,6 @@ shinyUI
       ("date", "",value  = Sys.Date(),
                     max    = Sys.Date(), format = "dd-mm-yyyy", width = 440),
       h4("Choose parameters values"),
-#       helpText("We use 25, 500 and 250 as default parameter values",
-#                "for Bandwith (bw), Rolling window (l_rw) and Kendall window (l_kw)",
-#                " respectively."
-#                ),
       sidebarLayout
       (
        sidebarPanel
@@ -204,6 +200,7 @@ shinyUI
         ("kw", "Kendall window (l_kw)", min = 150, max = 350, value = 250),
         width = 12
        ),
+
        mainPanel
        ( 
         width = 0
@@ -212,7 +209,8 @@ shinyUI
      ),
      column
      ( 4,
-      plotOutput("ews_finance",width = 361, height = 700)
+      plotOutput("ews_finance",width = 361, height = 700),
+     downloadButton(outputId="Analyze_yourself", label = "Download the Plot")
      ),
      column
      ( 4, 

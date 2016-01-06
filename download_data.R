@@ -1,4 +1,4 @@
-#Written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
+#Code written by Nikunj Goel, Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA
 
 Begin = Sys.time()
 source("functions_stock_analysis.R")
