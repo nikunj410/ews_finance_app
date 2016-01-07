@@ -115,8 +115,8 @@ shinyUI
       verbatimTextOutput("summary_current_sensitivity")),
       column(8,
 
-         plotOutput("ews_current", width = 730, height = 370),
-         plotOutput("sensitivity_plot", width = 730, height = 370)
+         plotOutput("ews_current", width = 690, height = 350),
+         plotOutput("sensitivity_plot", width = 690, height = 350)
 
       )
     )
@@ -209,14 +209,13 @@ shinyUI
      ),
      column
      ( 4,
-      plotOutput("ews_finance",width = 361, height = 700),
+      plotOutput("ews_finance",width = 341, height = 661),
      downloadButton(outputId="Analyze_yourself", label = "Download the Plot")
      ),
      column
      ( 4, 
       verbatimTextOutput("summary_analyse")
      )
-     
     )
    )
   )

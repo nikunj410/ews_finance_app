@@ -9,6 +9,60 @@ library('sfsmisc')
 library('shape')
 library('doParallel')
 library('foreach')
+
+StockList <- function() {
+  list = c("S&P_500_USA",
+           "NASDAQ_Composite_Index_USA",
+           "Dow_Jones_Industrial_Average_USA",
+           "New_York_Stock_Exchange_USA",
+           "Russell_1000_Index_USA",
+           "Wilshire_5000_Index_USA",
+           "S&P_TSX_Composite_Index_Canada",
+           "Mexbol_IPC_Index_Mexico",
+           "Bovespa_Index_Brazil",
+           "MERVAL_Index_Argentina",
+           "DAX_Index_Germany",
+           "CAC_40_Index_France",
+           "RTSI_Index_Russia",
+           "IBEX_35_Index_Spain",
+           "ATX_Index_Austria",
+           "Euronext_BEL_20_Index_Belgium",
+           "CROBEX_Index_Croatia",
+           "PS_Index_Czech_Republic",
+           "OMX_Copenhagen_20_Index_Denmark",
+           "OMX_Tallinn_Index_Estonia",
+           "OMX_Helsinki_25_Index_Finland",
+           "Athens_Composite_Index_Greece",
+           "BUX_Blue_Chip_Index_Hungary",
+           "OMX_Iceland_All_Share_Index_Iceland",
+           "OMX_Riga_Index_Latvia",
+           "OMX_Vilnius_Index_Lithuania",
+           "Lux_General_Index_Luxembourg",
+           "AEX_Amsterdam_Index_Netherlands",
+           "OMX_Oslo_20_Index_Norway",
+           "BET_Index_Romania",
+           "BELEX_15_Index_Serbia",
+           "SBITOP_Index_Slovenia",
+           "OMX_Stockholm_30_Index_Sweden",
+           "Swiss_Market_Index_Switzerland",
+           "UX_Index_Ukraine",
+           "Shanghai_Composite_Index_China",
+           "Hang_Seng_Index_China",
+           "Nikkei_225_Index_Japan",
+           "BSE_Sensex_India",
+           "KOSPI_Composite_Index_South_Korea",
+           "Jakarta_Composite_Index_Indonesia",
+           "Amman_General_Index_Jordan",
+           "Straits_Times_Index_Singapore",
+           "Colombo_All_Shares_Index_Sri_Lanka",
+           "Taiwan_Weighted_Index_Taiwan",
+           "All_Ordinaries_Index_Australia",
+           "NZSE_50_Index_New_Zealand",
+           "Johannesburg_Stock_Exchange_South_Africa",
+           "Milano_Italia_Borsa_Italy"
+  )
+  return(list)
+}
 sciNotation <- function(x, digits = 1) {
   if (length(x) > 1) {
     return(append(sciNotation(x[1]), sciNotation(x[-1])))
