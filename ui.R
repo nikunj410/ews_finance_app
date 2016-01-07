@@ -184,9 +184,10 @@ shinyUI
       h4("Choose a Date"),
       helpText("We use last four years from the provided date as our rolling window period"
               ),
-      dateInput
-      ("date", "",value  = Sys.Date(),
-                    max    = Sys.Date(), format = "dd-mm-yyyy", width = 440),
+      uiOutput("date_limit"),###
+#       dateInput
+#       ("date", "",value  = Sys.Date(),
+#                     max    = Sys.Date(), format = "dd-mm-yyyy", width = 440),
       h4("Choose parameters values"),
       sidebarLayout
       (

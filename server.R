@@ -182,7 +182,17 @@ shinyServer(function(input, output,session) {
       paste("Intermediate variability")
     }
   })
-  
+
+  output$date_limit <- renderUI({
+    
+    market = Stock_Market[as.numeric(input$market)]
+    Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
+    Stock$Date = as.Date(Stock$Date)
+    end_date = head(Stock$Date,1) + years(4)
+    "inputdate" = dateInput("date", "",value  = Sys.Date(),
+                            min = end_date, max = Sys.Date(), format = "dd-mm-yyyy", width = 440)
+  })  
+
   output$ews_finance <- renderPlot({
 
     market = Stock_Market[as.numeric(input$market)]
