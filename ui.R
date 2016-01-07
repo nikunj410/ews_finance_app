@@ -20,7 +20,7 @@ shinyUI
      tabPanel("DJI",
       fluidRow
       ( 
-       column(7,img(src="dji.jpg", height = 700, width = 525, align = "center")),
+       column(7,img(src="dji.jpg", height = 634, width = 475, align = "center")),
        column(4,includeText("caption_dji.txt"))
       )
      ), 
@@ -28,7 +28,7 @@ shinyUI
      tabPanel("S&P500",
       fluidRow
       ( 
-       column(7,img(src="sp500.jpg", height = 700, width = 425, align = "center")),
+       column(7,img(src="sp500.jpg", height = 634, width = 385, align = "center")),
        column(4,includeText("caption_sp500.txt"))
       )
      ), 
@@ -36,7 +36,7 @@ shinyUI
      tabPanel("NASDAQ",
       fluidRow
       ( 
-       column(7,img(src="nasdaq.jpg", height = 700, width = 425, align = "center")),
+       column(7,img(src="nasdaq.jpg", height = 634, width = 385, align = "center")),
        column(4,includeText("caption_nasdaq.txt"))
       )
      ), 
@@ -44,7 +44,7 @@ shinyUI
      tabPanel("DAX and FTSE",
       fluidRow
       ( 
-       column(7,img(src="dax&ftse.jpg", height = 700, width = 525, align = "center")),
+       column(7,img(src="dax&ftse.jpg", height = 634, width = 475, align = "center")),
        column(4,includeText("caption_dax_ftse.txt"))
       )
      )
