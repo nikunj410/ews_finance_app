@@ -198,7 +198,7 @@ shinyServer(function(input, output,session) {
     market = Stock_Market[as.numeric(input$market)]
     Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
-    start_date = tail(Stock$Date,1)
+    start_date = min(tail(Stock$Date,1),Sys.Date())
     end_date = head(Stock$Date,1) + years(4)
     "inputdate" = dateInput("date", "",value  = start_date,
                             min = end_date, max = start_date, format = "dd-mm-yyyy", width = 440)
