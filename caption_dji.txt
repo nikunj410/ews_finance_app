@@ -1,1 +1,2 @@
-Major Financial Meltdowns
+In this Figure, we show the results of analysis of daily closing data of Dow Jones Index. Each column correspond to analysis of a major financial crash (1929, 1987, 2000, and 2008, respectively) in the history of Dow Jones Index. Our analysis showed that autocorrelation at lag-1, a key measure of critical slowing down, showed either no or weak trends, prior to any of the crashes (see the manuscript for details of time series analysis). In contrast, variance and the average of the power-spectrum at low frequencies both showed strong increasing trends prior to all of the crashes. 
+
