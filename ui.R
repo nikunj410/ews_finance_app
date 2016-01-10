@@ -11,7 +11,14 @@ shinyUI
    tabPanel
    ("About",includeMarkdown("about.Rmd")),
    tabPanel
-   ("Discription"),
+   ("Discription",
+    tabsetPanel
+    (
+      tabPanel("Introduction",includeMarkdown("about.Rmd")),
+      tabPanel("Methods A",includeMarkdown("about.Rmd")),
+      tabPanel("Methods B",includeMarkdown("about.Rmd"))
+    )
+   ),
    tabPanel
    (
     "Historical Meltdowns",
@@ -207,8 +214,9 @@ shinyUI
      ),
      column
      ( 4,
-      plotOutput("ews_finance",width = 341, height = 661),
-     downloadButton(outputId="Analyze_yourself", label = "Download the Plot")
+      downloadButton(outputId="Analyze_yourself", label = "Download the Plot"),
+      plotOutput("ews_finance",width = 341, height = 661)
+     
      ),
      column
      ( 4, 
