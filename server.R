@@ -9,7 +9,9 @@ shinyServer(function(input, output,session) {
   kw = 250
   kend = 0
   
-  Stock_Market = StockList()
+  Stock_Market = StockMarketList()
+  Stock_Index = StockIndexList()
+  
   
   output$summary_current_sensitivity <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
@@ -25,12 +27,13 @@ shinyServer(function(input, output,session) {
   output$summary_current <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
-    
+
     if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
     {
       
-      if (kt_last$var > 0.9 && kt_last$spec > 0.9)
+      if (kt_last$var > 0.9 & kt_last$spec > 0.9)
       {
+        
         paste("Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
       }
       else if (kt_last$var > 0.9 & kt_last$spec < 0.9)
@@ -155,20 +158,27 @@ shinyServer(function(input, output,session) {
   output$summary_analyse <- renderText({ 
     market = Stock_Market[as.numeric(input$market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
+    add_string = paste("Plot (a) is the historical time series data for ",Stock_Index[as.numeric(input$current_market)],
+                       ". The red line in the plot is the smoothened time series data for previous four years from the input date.",
+                       " Plot (b) is the residual time series over which we calculated our early warning signals,",
+                       " Varaince (c) and Power Spectrum (d), using a rolling window analysis of lenght l_rw (see input parameters).",
+                       " Trends of the early wrning signals are quantified using a Kendall's rank correlation cofficient over",
+                       " the kendall window of length l_kw (see input parameters). In these simulations we use bw = 25,",
+                       " l_rw = 500 days and k_rw = 250 days as default parameters.", sep="")
     if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
     {
       
-      if (kt_last$var > 0.9 && kt_last$spec > 0.9)
+      if (kt_last$var > 0.9 & kt_last$spec > 0.9)
       {
-        paste("Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
+        paste(add_string,"Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
       }
       else if (kt_last$var > 0.9 & kt_last$spec < 0.9)
       {
         paste("Kendall tau coeffecients for variance is high", collapse = " to ")
       }
-      else (kt_last$var < 0.9 & kt_last$spec > 0.9)
+      else if(kt_last$var < 0.9 & kt_last$spec > 0.9)
       {
-      paste("Kendall tau coeffecients for power spectrum is high", collapse = " to ")
+      paste(add_string,"Kendall tau coeffecients for power spectrum is high", collapse = " to ")
       }
     }
   
@@ -188,9 +198,10 @@ shinyServer(function(input, output,session) {
     market = Stock_Market[as.numeric(input$market)]
     Stock = read.csv(paste(c("data_files/",market,"_data.txt"),collapse = ""),stringsAsFactors=FALSE)
     Stock$Date = as.Date(Stock$Date)
+    start_date = tail(Stock$Date,1)
     end_date = head(Stock$Date,1) + years(4)
-    "inputdate" = dateInput("date", "",value  = Sys.Date(),
-                            min = end_date, max = Sys.Date(), format = "dd-mm-yyyy", width = 440)
+    "inputdate" = dateInput("date", "",value  = start_date,
+                            min = end_date, max = start_date, format = "dd-mm-yyyy", width = 440)
   })  
 
   output$ews_finance <- renderPlot({

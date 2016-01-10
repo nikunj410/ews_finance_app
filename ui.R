@@ -122,7 +122,7 @@ shinyUI
     )
    ),
    tabPanel
-   ("Analyse Yourself",  
+   ("Analyze Yourself",  
     # Application title
     fluidRow(
      column(4,
@@ -184,10 +184,7 @@ shinyUI
       h4("Choose a Date"),
       helpText("We use last four years from the provided date as our rolling window period"
               ),
-      uiOutput("date_limit"),###
-#       dateInput
-#       ("date", "",value  = Sys.Date(),
-#                     max    = Sys.Date(), format = "dd-mm-yyyy", width = 440),
+      uiOutput("date_limit"),
       h4("Choose parameters values"),
       sidebarLayout
       (

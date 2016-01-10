@@ -10,7 +10,7 @@ library('shape')
 library('doParallel')
 library('foreach')
 
-StockList <- function() {
+StockMarketList <- function() {
   list = c("S&P_500_USA",
            "NASDAQ_Composite_Index_USA",
            "Dow_Jones_Industrial_Average_USA",
@@ -63,6 +63,61 @@ StockList <- function() {
   )
   return(list)
 }
+
+StockIndexList <- function(){
+  
+  list = c("S&P500 Index (USA, North America)",
+           "NASDAQ Composite Index (USA, North America)",
+           "Dow Jones Index (USA, North America)",
+           "NYSE Composite Index (USA, North America)",
+           "Russell 1000 Index (USA, North America)",
+           "Wilshire 5000 Index (USA, North America)",
+           "S&P TSX Composite Index (Canada, North America)",
+           "Mexbol IPC Index (Mexico, North America)",
+           "Bovespa Index (Brazil, South America)",
+           "MERVAL Index (Argentina, South America)",
+           "DAX Index (Germany, Europe)",
+           "CAC-40 Index (France, Europe)",
+           "RTSI Index (Russia, Europe)",
+           "IBEX 35 Index (Spain, Europe)",
+           "ATX Index (Austria, Europe)",
+           "Euronext BEL-20 Index (Belgium, Europe)",
+           "CROBEX Index (Croatia, Europe)",
+           "PS Index (Czech Republic, Europe)",
+           "OMX Copenhagen 20 Index (Denmark, Europe)",
+           "OMX Tallinn Index (Estonia, Europe)",
+           "OMX Helsinki 25 Index (Finland, Europe)",
+           "Athens Composite Index (Greece, Europe)",
+           "BUX Blue Chip Index (Hungary, Europe)",
+           "OMX Iceland All-Share Index (Iceland, Europe)",
+           "OMX Riga Index (Latvia, Europe)",
+           "OMX Vilnius Index (Lithuania, Europe)",
+           "Lux General Index (Luxembourg, Europe)",
+           "AEX Amsterdam Index (Netherlands, Europe)",
+           "OMX Oslo 20 Index (Norway, Europe)",
+           "BET Index (Romania, Europe)",
+           "BELEX 15 Index (Serbia, Europe)",
+           "SBITOP Index (Slovenia, Europe)",
+           "OMX Stockholm 30 Index (Sweden, Europe)",
+           "Swiss Market Index (Switzerland, Europe)",
+           "UX Index (Ukraine, Europe)",
+           "Shanghai Composite Index (China, Asia)",
+           "Hang Seng Index (Hong Kong, Asia)",
+           "Nikkei 225 Index (Japan, Asia)",
+           "Bombay Stock Exchange (India, Asia)",
+           "KOSPI Composite Index (South Korea, Asia)",
+           "Jakarta Composite Index (Indonesia, Asia)",
+           "Amman General Index (Jordan, Asia)",
+           "Straits Times Index (Singapore, Asia)",
+           "Colombo All Shares Index (Sri Lanka, Asia)",
+           "Taiwan Weighted Index (Taiwan, Asia)",
+           "All Ordinaries Index (Australia, Oceania)",
+           "NZSE 50 Index (New Zealand, Oceania)",
+           "Johannesburg Stock Exchange (South Africa, Africa)"
+          )
+  return(list)
+}
+
 sciNotation <- function(x, digits = 1) {
   if (length(x) > 1) {
     return(append(sciNotation(x[1]), sciNotation(x[-1])))
