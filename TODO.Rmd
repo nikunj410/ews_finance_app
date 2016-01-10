@@ -2,11 +2,7 @@
 
 ###Code (NG)
 * Modification to layout of app
-    * Make the sensitivity analysis optional/separate tab.
 * Current trends tab 
-    * Remove one of the historical time series graph
-    * Remove autocorrelation 
-    * Make sensitivity analysis (k-t histograms) and rolling Kendall tau graphs optional.
 * Analyze yourself tab 
     * Same three points as current trends tab.
 * Automatic interpretation of results
@@ -16,10 +12,6 @@
 * Will depend on journal
 
 ###Writing (Vishu)
-* About tab
-    * Link to source code
-    * Info on authors and citations
-    * Link to the app
 * Figure captions
 * Description tab
     * Critical transitions
