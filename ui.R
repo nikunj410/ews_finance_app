@@ -14,7 +14,7 @@ shinyUI
    ("Discription",
     tabsetPanel
     (
-      tabPanel("Introduction",includeMarkdown("about.Rmd")),
+      tabPanel("Introduction",includeMarkdown("Introduction.Rmd")),
       tabPanel("Methods A",includeMarkdown("about.Rmd")),
       tabPanel("Methods B",includeMarkdown("about.Rmd"))
     )

@@ -1,9 +1,11 @@
 
-**About the App**: This RShiny App is a supplement to the manuscript [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198). In the manuscript, we applied the early warning signals of abrupt critical transitions that were developed in the ecology, climatic sciences and other complex systems literature. Those theories, based on nonlinear dynamical models, make the prediction that systems approaching a transition exhibit (a) slowed response to perturbations and (b) rising variability, thus serving as early warning signals. 
+**About the App**: This RShiny App is a supplement to the manuscript [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198). In the manuscript, we applied ideas of tipping points and early warning signals of critical transitions. These tools were developed in the ecology, climatic sciences and complex systems literature. Theories make the prediction that systems approaching a transition exhibit (a) slowed response to perturbations and (b) rising variability, thus serving as early warning signals. We set out to test these predictions to see if there are early warning signals of financial meltdowns. 
 
-Our key result was that stock markets exhibited rising variability (as measured by variance and power-spectrum at low-frequencies of the stock market data) prior to all the financial meltdowns (including the key historical ones like 1929 Great depression, 1987 crash, 2008 great recession, etc) crashes we analyzed. However, critical slowing down, a key indicator of critical transitions, did not occur prior to any of the crashes that we analyzed.
+Our key result was that stock markets exhibited rising variability (as measured by variance and power-spectrum at low-frequencies of the stock market data) prior to all the financial meltdownswe analyzed.  However, critical slowing down, a key indicator of critical transitions, did not occur prior to any of the crashes that we analyzed. See historical meltdown tabs for the figures to see these results.
 
-In this simple web-app, you can apply those metrics to obtain the current trends of various stock markets (around 48 markets from the Americas, Europe, Asia and Australia) in the world. We have also summarized the method and results of the manuscript for a quick reference to an interested reader. 
+In this simple web-app, you can obtain the current trends of the variability metrics (see Current Trends tab) of various stock markets from around the world (48 markets from the Americas, Europe, Asia and Australia).
+
+At places, the text and figures on this webpage have been taken verbatim from our manuscript [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198).
 
 **Authors**: [Nikunj Goel](http://eeb.yale.edu/people/graduate-students/nikunj-goel) and [Vishwesha Guttal](https://twitter.com/vishuguttal)
 
@@ -13,7 +15,7 @@ In this simple web-app, you can apply those metrics to obtain the current trends
 
 **Data Source**: Market data are downloaded from [Quandl Financial and Economic Data](https://www.quandl.com/collections/markets/global-stock-markets).
 
-**Created with**: RStudio and Shiny
+**Created with**: RStudio and [Shiny](http://shiny.rstudio.com/)
 
 **Licence**: [GPL v3](http://www.gnu.org/copyleft/gpl.html)
 
