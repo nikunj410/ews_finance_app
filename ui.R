@@ -220,6 +220,7 @@ shinyUI
      ),
      column
      ( 4, 
+      includeText("Analyze_yourself.txt"),
       verbatimTextOutput("summary_analyse")
      )
     )

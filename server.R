@@ -158,19 +158,12 @@ shinyServer(function(input, output,session) {
   output$summary_analyse <- renderText({ 
     market = Stock_Market[as.numeric(input$market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
-    add_string = paste("Plot (a) is the historical time series data for ",Stock_Index[as.numeric(input$current_market)],
-                       ". The red line in the plot is the smoothened time series data for previous four years from the input date.",
-                       " Plot (b) is the residual time series over which we calculated our early warning signals,",
-                       " Varaince (c) and Power Spectrum (d), using a rolling window analysis of lenght l_rw (see input parameters).",
-                       " Trends of the early wrning signals are quantified using a Kendall's rank correlation cofficient over",
-                       " the kendall window of length l_kw (see input parameters). In these simulations we use bw = 25,",
-                       " l_rw = 500 days and k_rw = 250 days as default parameters.", sep="")
     if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
     {
       
       if (kt_last$var > 0.9 & kt_last$spec > 0.9)
       {
-        paste(add_string,"Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
+        paste("Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
       }
       else if (kt_last$var > 0.9 & kt_last$spec < 0.9)
       {
@@ -178,7 +171,7 @@ shinyServer(function(input, output,session) {
       }
       else if(kt_last$var < 0.9 & kt_last$spec > 0.9)
       {
-      paste(add_string,"Kendall tau coeffecients for power spectrum is high", collapse = " to ")
+      paste("Kendall tau coeffecients for power spectrum is high", collapse = " to ")
       }
     }
   
@@ -244,7 +237,7 @@ shinyServer(function(input, output,session) {
     points(stock_precrash$dates[stock_precrash$N],
            ews_trends$var_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
     draw_kw_arrow(stock_precrash$dates,ews_trends$var_residuals,stock_precrash$N,input$kw,kend,2)
-    kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$spec, 1.5)
+    kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$var, 1.5)
     # Power Spectrum
     plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
                     axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
@@ -298,7 +291,7 @@ shinyServer(function(input, output,session) {
       points(stock_precrash$dates[stock_precrash$N],
              ews_trends$var_residuals[stock_precrash$N],lwd = 8,col = 'darkviolet')
       draw_kw_arrow(stock_precrash$dates,ews_trends$var_residuals,stock_precrash$N,input$kw,kend,2)
-      kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$spec, 1.5)
+      kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$var, 1.5)
       # Power Spectrum
       plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
                       axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
