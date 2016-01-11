@@ -11,13 +11,13 @@ shinyUI
    tabPanel
    ("About",includeMarkdown("about.Rmd")),
    tabPanel
-   ("Discription",
-    tabsetPanel
-    (
-      tabPanel("Introduction",includeMarkdown("Introduction.Rmd")),
-      tabPanel("Methods A",includeMarkdown("MethodsA.Rmd")),
-      tabPanel("Methods B",includeMarkdown("MethodsB.Rmd"))
-    )
+   ("Discription",includeMarkdown("description.Rmd")
+#     tabsetPanel
+#     (
+#       tabPanel("Introduction",includeMarkdown("Introduction.Rmd")),
+#       tabPanel("Methods A",includeMarkdown("MethodsA.Rmd")),
+#       tabPanel("Methods B",includeMarkdown("MethodsB.Rmd"))
+#     )
    ),
    tabPanel
    (
