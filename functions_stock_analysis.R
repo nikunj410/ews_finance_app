@@ -242,7 +242,7 @@ sensitivity_histograms <- function(currentdate,Stock,rwrange,bwrange,N_sensitivi
 }
 
 ### Ploting
-plot_timeseries <- function(x,y,colour,axis_font,x_label,y_label, y_points,flag,x_dist,y_dist)
+plot_timeseries <- function(x,y,colour,axis_font,x_label,y_label, y_points,flag,x_dist,y_dist,GLabel)
 {
   plot(x,y,type='l',lwd = 4,xlab = '',ylab = NA,
        col=colour,yaxt = 'n',cex.lab = 2,cex.axis = axis_font)
@@ -254,6 +254,8 @@ plot_timeseries <- function(x,y,colour,axis_font,x_label,y_label, y_points,flag,
   
   mtext(side = 2, y_label, line = y_dist,cex = 1.4 )
   mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+  mtext(side = 2, GLabel ,cex = 1.5,line = -1.5, las = 2,
+        at = min(y,na.rm = T)+0.95*(max(y,na.rm = T)-min(y,na.rm = T)))
 }
 
 draw_rw_arrow <- function(x,y,rw,text_font)
@@ -278,7 +280,7 @@ kendall_text<- function(x,y,rw,kendall_value, kendall_font)
       paste(c("Kendall-t = ",kendall_value), collapse = ""),cex = kendall_font)  
 }
 
-rolling_kt_plot<- function(x,y,x_label,y_label,axis_font,x_dist,y_dist)
+rolling_kt_plot<- function(x,y,x_label,y_label,axis_font,x_dist,y_dist,GLabel)
 {
   plot(x,y,type='l', ylim = c(-1,1),lwd = 5,xlab = '',ylab = NA,yaxt = 'n',cex.lab = 2,cex.axis=axis_font)
   points(x,rep.int(0.9, times = length(x)), type = 'l',col ='red', lwd = 3, ylim = c(-1,1))
@@ -286,9 +288,10 @@ rolling_kt_plot<- function(x,y,x_label,y_label,axis_font,x_dist,y_dist)
   axis(2,las=1, at = c(-1, 0, 1), cex.axis=axis_font,tck=0)
   mtext(side = 2,y_label, line = y_dist,cex = 1.4 )
   mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+  mtext(side = 2, GLabel ,cex = 1.5,line = -1.5, las = 2,at = 0.7)
 }
 
-kendall_histogram_plot<-function(x,axis_font,x_label,y_label,x_dist,y_dist)
+kendall_histogram_plot<-function(x,axis_font,x_label,y_label,x_dist,y_dist,GLabel)
 {
   h = hist(x,breaks = seq(-1,1, by = 0.1),plot=F);
   h$counts = h$counts/sum(h$counts)
@@ -298,4 +301,5 @@ kendall_histogram_plot<-function(x,axis_font,x_label,y_label,x_dist,y_dist)
   axis(2,las=1, at = c(0,0.5,1), cex.axis=axis_font,tck=0)
   mtext(side = 2, y_label, line = y_dist,cex = 1.4 )
   mtext(side = 1, x_label, line = x_dist,cex = 1.4 )
+  mtext(side = 2, GLabel ,cex = 1.5,line = -1.5, las = 2,at = 0.95)
 }

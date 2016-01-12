@@ -13,49 +13,38 @@ shinyServer(function(input, output,session) {
   Stock_Index = StockIndexList()
   
   
-  output$summary_current_sensitivity <- renderText({ 
-    market = Stock_Market[as.numeric(input$current_market)]
-    kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
-    
-    if (input$sensitivity == TRUE)
-
-    {
-      paste("bla bla bla")
-    }
-  })
-  
   output$summary_current <- renderText({ 
     market = Stock_Market[as.numeric(input$current_market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
 
-    if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
+    if (kt_last$var > 0.85 || kt_last$spec > 0.85 )
     {
-      
-      if (kt_last$var > 0.9 & kt_last$spec > 0.9)
-      {
-        
-        paste("Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
-      }
-      else if (kt_last$var > 0.9 & kt_last$spec < 0.9)
-      {
-        paste("Kendall tau coeffecients for variance is high", collapse = " to ")
-      }
-      else (kt_last$var < 0.9 & kt_last$spec > 0.9)
-      {
-      paste("Kendall tau coeffecients for power spectrum is high", collapse = " to ")
-      }
+      paste("The system is exhibiting strong trends of increasing variability. One must check",
+            "if these trends die away soon or whether they persist. A persisting trend of",
+            "increasing variability could indicate systemic risk. All major stock market crashes",
+            "were preceded by strong trends of increasing variability in the past, but there could",
+            "also be changes of false alarms.", sep = " ")
     }
-    
-    else if (kt_last$var < 0.7 & kt_last$spec < 0.7 )
+    else if (kt_last$var > 0.5 || kt_last$spec > 0.5)
     {
-      paste("Low variability suggests a stable system")
+      paste("The system is showing increasing trends in variability but the strength is",
+            "moderate. If these trends become stronger, there could be a possibility of",
+            "systemic risk. Therefore, one must check these trends again to see if the strength",
+            "of rising variability, as denoted by Kendall-tau, going to increase further.",sep = " ") 
     }
-    
+    else if (kt_last$var > -0.5 & kt_last$spec > -0.5 )
+    {
+      paste("The current trends of variability for variance and power-spectrum are relatively",
+            "weak. Such trends in the major markets such as DJI, SP500 and NASDAQ in the past",
+            "occur frequently and are indicative of a relatively stable state away from",
+            "a crash",sep = " ") 
+    }
     else
     {
-      paste("Intermediate variability")
+      paste("The system is showing reducing variability. Such trends in the major",
+            "markets such as DJI, SP500 and NASDAQ in the past occur frequently and",
+            "are indicative of a relatively stable state away from a crash.",sep = " ")
     }
-
   })
   
 
@@ -80,7 +69,8 @@ shinyServer(function(input, output,session) {
     axis_font = 1.4
     x_dist = 2.2
     y_dist = 5.5
-    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
+    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, "",
+                    "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
     points(curr_stock_precrash$dates,curr_stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(curr_stock_precrash$dates[1],curr_stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(curr_stock_precrash$dates[curr_stock_precrash$N],curr_stock_precrash$smooth[curr_stock_precrash$N],
@@ -88,7 +78,7 @@ shinyServer(function(input, output,session) {
 
     # Resisduals
     plot_timeseries(curr_stock_precrash$dates,curr_stock_precrash$residuals, "blue",axis_font, " ",
-                    "Residuals", 2,F,x_dist,y_dist)
+                    "Residuals", 2,F,x_dist,y_dist,"b")
     axis(2,at=pretty(curr_stock_precrash$residuals,n=2),
          labels=format(pretty(curr_stock_precrash$residuals,n=2), scientific=F),
          las=1,cex.axis=1.4,tck=0)
@@ -97,7 +87,7 @@ shinyServer(function(input, output,session) {
     
     # Variance
     plot_timeseries(curr_stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
-                    axis_font, "Date", "Variance", 2,T,x_dist,y_dist)
+                    axis_font, "Date", "Variance", 2,T,x_dist,y_dist,"c")
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kw-kend + 1],
            ews_trends$var_residuals[curr_stock_precrash$N-kw-kend + 1],lwd = 8,col = 'darkviolet')
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kend],
@@ -107,7 +97,7 @@ shinyServer(function(input, output,session) {
     
     # Power Spectrum
     plot_timeseries(curr_stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
-                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
+                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist,"d")
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kw-kend + 1],
            ews_trends$spec_residuals[curr_stock_precrash$N-kw-kend + 1],lwd = 8,col = 'darkviolet')
     points(curr_stock_precrash$dates[curr_stock_precrash$N-kend],
@@ -132,22 +122,22 @@ shinyServer(function(input, output,session) {
       
       kendall_histograms = read.csv(paste(c("data_files/",market,"_histograms.txt"),collapse = ""),
                                     stringsAsFactors=FALSE)
-      par(mfrow=c(2,2),mai=c(.65,1.4,0.1,0.25))
+      par(mfrow=c(2,2),mai=c(.65,1.5,0.1,0.25))
       # Variance kenall time series
       rolling_kt_plot(kt_series$Date[kt_dates_index],kt_series$var[kt_dates_index],"Date",
-                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist)
+                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist,"e")
       
       # Power spectrum kenall time series
       rolling_kt_plot(kt_series$Date[kt_dates_index],kt_series$spec[kt_dates_index],"Date",
-                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist)
+                      'Rolling \n Kendall-t',axis_font,x_dist,y_dist,"f")
 
       # Variance histograms
       kendall_histogram_plot(kendall_histograms$var,axis_font,'Kendall-Tau',
-                             "Normalized \n Frequency",x_dist,y_dist)
+                             "Normalized \n Frequency",x_dist,y_dist,"g")
       
       # Power spectrum histograms
       kendall_histogram_plot(kendall_histograms$spec,axis_font,'Kendall-Tau',
-                             "Normalized \n Frequency",x_dist,y_dist)
+                             "Normalized \n Frequency",x_dist,y_dist,"h")
     }
     
   })
@@ -158,31 +148,33 @@ shinyServer(function(input, output,session) {
   output$summary_analyse <- renderText({ 
     market = Stock_Market[as.numeric(input$market)]
     kt_last = tail(read.csv(paste(c("data_files/",market,"_rolling_kt.txt"),collapse = ""),stringsAsFactors=FALSE),1)
-    if (kt_last$var > 0.9 || kt_last$spec > 0.9 )
+    if (kt_last$var > 0.85 || kt_last$spec > 0.85 )
     {
-      
-      if (kt_last$var > 0.9 & kt_last$spec > 0.9)
-      {
-        paste("Kendall tau coeffecients for both variance and power spectrum are high", collapse = " to ")
-      }
-      else if (kt_last$var > 0.9 & kt_last$spec < 0.9)
-      {
-        paste("Kendall tau coeffecients for variance is high", collapse = " to ")
-      }
-      else if(kt_last$var < 0.9 & kt_last$spec > 0.9)
-      {
-      paste("Kendall tau coeffecients for power spectrum is high", collapse = " to ")
-      }
+      paste("The system is exhibiting strong trends of increasing variability. One must check",
+            "if these trends die away soon or whether they persist. A persisting trend of",
+            "increasing variability could indicate systemic risk. All major stock market crashes",
+            "were preceded by strong trends of increasing variability in the past, but there could",
+            "also be changes of false alarms.", sep = " ")
     }
-  
-    else if (kt_last$var < 0.7 & kt_last$spec < 0.7 )
-      {
-        paste("Low variability suggests a stable system")
-      }
-  
+    else if (kt_last$var > 0.5 || kt_last$spec > 0.5)
+    {
+      paste("The system is showing increasing trends in variability but the strength is",
+            "moderate. If these trends become stronger, there could be a possibility of",
+            "systemic risk. Therefore, one must check these trends again to see if the strength",
+            "of rising variability, as denoted by Kendall-tau, going to increase further.",sep = " ") 
+    }
+    else if (kt_last$var > -0.5 & kt_last$spec > -0.5 )
+    {
+      paste("The current trends of variability for variance and power-spectrum are relatively",
+            "weak. Such trends in the major markets such as DJI, SP500 and NASDAQ in the past",
+            "occur frequently and are indicative of a relatively stable state away from",
+            "a crash",sep = " ") 
+    }
     else
     {
-      paste("Intermediate variability")
+      paste("The system is showing reducing variability. Such trends in the major",
+            "markets such as DJI, SP500 and NASDAQ in the past occur frequently and",
+            "are indicative of a relatively stable state away from a crash.",sep = " ")
     }
   })
 
@@ -217,21 +209,24 @@ shinyServer(function(input, output,session) {
     y_dist = 7
     
     # Historical data
-    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
+    plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ",
+                    "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
     points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
            lwd = 8,col = 'deepskyblue')
+    mtext(side = 2, "a" ,cex = 1.5,line = -1.5, las = 2,
+          at = min(Stock$Close)+0.95*(max(Stock$Close)-min(Stock$Close)))
     # Resisduals
     plot_timeseries(stock_precrash$dates,stock_precrash$residuals, "blue",axis_font, " ",
-                    "Residuals", 2,F,x_dist,y_dist)
+                    "Residuals", 2,F,x_dist,y_dist,"b")
     axis(2,at=pretty(stock_precrash$residuals,n=2),
          labels=format(pretty(stock_precrash$residuals,n=2), scientific=F),
          las=1,cex.axis=axis_font,tck=0)
     draw_rw_arrow(stock_precrash$dates,stock_precrash$residuals,input$rw,2)
     # Variance
     plot_timeseries(stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
-                    axis_font, "", "Variance", 2,T,x_dist,y_dist)
+                    axis_font, "", "Variance", 2,T,x_dist,y_dist,"c")
     points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
            ews_trends$var_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
     points(stock_precrash$dates[stock_precrash$N],
@@ -240,7 +235,7 @@ shinyServer(function(input, output,session) {
     kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$var, 1.5)
     # Power Spectrum
     plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
-                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
+                    axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist,"d")
     points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
            ews_trends$spec_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
     points(stock_precrash$dates[stock_precrash$N],
@@ -271,21 +266,22 @@ shinyServer(function(input, output,session) {
       pdf(file,5,10)
       par(mfrow=c(4,1),mai=c(.5,1.5,0.1,0.2))
       # Historical data
-      plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ", "Historical\nStock Index", 3,T,x_dist,y_dist)
+      plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ",
+                      "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
       points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
       points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
       points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
              lwd = 8,col = 'deepskyblue')
       # Resisduals
       plot_timeseries(stock_precrash$dates,stock_precrash$residuals, "blue",axis_font, " ",
-                      "Residuals", 2,F,x_dist,y_dist)
+                      "Residuals", 2,F,x_dist,y_dist,"b")
       axis(2,at=pretty(stock_precrash$residuals,n=2),
            labels=format(pretty(stock_precrash$residuals,n=2), scientific=F),
            las=1,cex.axis=axis_font,tck=0)
       draw_rw_arrow(stock_precrash$dates,stock_precrash$residuals,input$rw,2)
       # Variance
       plot_timeseries(stock_precrash$dates,ews_trends$var_residuals, 'chartreuse4',
-                      axis_font, "", "Variance", 2,T,x_dist,y_dist)
+                      axis_font, "", "Variance", 2,T,x_dist,y_dist,"c")
       points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
              ews_trends$var_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
       points(stock_precrash$dates[stock_precrash$N],
@@ -294,7 +290,7 @@ shinyServer(function(input, output,session) {
       kendall_text(stock_precrash$dates,ews_trends$var_residuals,input$rw,kendalls$var, 1.5)
       # Power Spectrum
       plot_timeseries(stock_precrash$dates,ews_trends$spec_residuals, 'deeppink',
-                      axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist)
+                      axis_font, "Date", "Power\nSpectrum", 3,T,x_dist,y_dist,"d")
       points(stock_precrash$dates[stock_precrash$N-input$kw + 1],
              ews_trends$spec_residuals[stock_precrash$N-input$kw + 1],lwd = 8,col = 'darkviolet')
       points(stock_precrash$dates[stock_precrash$N],

@@ -1,0 +1,4 @@
+Plot (e) and (g) are the rolling Kendall-tau time series for variance and power spectrum, respectively. In these graphs we use bw = 25 and l_rw = 500 days as default parameters values. Plot (f) and (h) are the histograms of Kendall coefficients for variance and power spectrum, respectively, obtained using several different combinations of parameter values.
+
+																																						
+

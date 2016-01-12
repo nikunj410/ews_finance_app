@@ -12,12 +12,6 @@ shinyUI
    ("About",includeMarkdown("about.Rmd")),
    tabPanel
    ("Discription",includeMarkdown("description.Rmd")
-#     tabsetPanel
-#     (
-#       tabPanel("Introduction",includeMarkdown("Introduction.Rmd")),
-#       tabPanel("Methods A",includeMarkdown("MethodsA.Rmd")),
-#       tabPanel("Methods B",includeMarkdown("MethodsB.Rmd"))
-#     )
    ),
    tabPanel
    (
@@ -117,9 +111,11 @@ shinyUI
                                                  "Johannesburg Stock Exchange (South Africa, Africa)" = 48
                                                  ),
       selected = 1, width  = 440),
+      includeText("Current_trends.txt"),
       verbatimTextOutput("summary_current"),
       checkboxInput("sensitivity", label = "Click here to see sensitivity analysis", value = FALSE),
-      verbatimTextOutput("summary_current_sensitivity")),
+      includeText("Current_trends_sensitivity.txt")),
+     
       column(8,
 
          plotOutput("ews_current", width = 690, height = 350),
