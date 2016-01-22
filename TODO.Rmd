@@ -1,25 +1,20 @@
 ##To do list
 
 ###Code (NG)
-* Modification to layout of app
 * Current trends tab 
+    * y-axis label of kendall-tau should read "Kendall-tau of Variance"
 * Analyze yourself tab 
+    * Include acf at lab-1 (because if someone wants to explore of all indicators, this is required)
     * Same three points as current trends tab.
+    * Put start and end dates back
 * Automatic interpretation of results
 * Automatic running of sensitivity analysis
 
-###Fig Plan
-* Will depend on journal
-
 ###Writing (Vishu)
-* Figure captions
 * Description tab
-    * Critical transitions
-    * EWS
-    * Summarize results from Guttal et al paper
     * How to interpret graphs
+    * ~~Summarize results from Guttal et al paper~~
+* ~~Figure captions~~
 
 ###Low priority
 * Move the code to ces server 
-
-##Completed tasks
