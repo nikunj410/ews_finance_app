@@ -70,7 +70,7 @@ shinyServer(function(input, output,session) {
     x_dist = 2.2
     y_dist = 5.5
     plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, "",
-                    "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
+                    "Stock Index", 3,T,x_dist,y_dist,"a")
     points(curr_stock_precrash$dates,curr_stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(curr_stock_precrash$dates[1],curr_stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(curr_stock_precrash$dates[curr_stock_precrash$N],curr_stock_precrash$smooth[curr_stock_precrash$N],
@@ -210,7 +210,7 @@ shinyServer(function(input, output,session) {
     
     # Historical data
     plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ",
-                    "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
+                    "Stock Index", 3,T,x_dist,y_dist,"a")
     points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
     points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
     points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
@@ -267,7 +267,7 @@ shinyServer(function(input, output,session) {
       par(mfrow=c(4,1),mai=c(.5,1.5,0.1,0.2))
       # Historical data
       plot_timeseries(Stock$Date, Stock$Close, "black",axis_font, " ",
-                      "Historical\nStock Index", 3,T,x_dist,y_dist,"a")
+                      "Stock Index", 3,T,x_dist,y_dist,"a")
       points(stock_precrash$dates,stock_precrash$smooth,type='l',lwd = 2,col='red')
       points(stock_precrash$dates[1],stock_precrash$smooth[1],lwd = 8,col = 'deepskyblue')
       points(stock_precrash$dates[stock_precrash$N],stock_precrash$smooth[stock_precrash$N],
