@@ -111,8 +111,9 @@ shinyUI
                                                  "Johannesburg Stock Exchange (South Africa, Africa)" = 48
                                                  ),
       selected = 1, width  = 440),
-      verbatimTextOutput("summary_current"),
-      checkboxInput("sensitivity", label = "Click here to see sensitivity analysis", value = FALSE)),
+      textOutput("summary_current"),
+      checkboxInput("sensitivity", label = "Click here to see sensitivity analysis", value = FALSE),
+      textOutput("summary_current_sensitivity")),
      
       column(8,
 
@@ -214,7 +215,7 @@ shinyUI
      ),
      column
      ( 4, 
-      verbatimTextOutput("summary_analyse")
+      textOutput("summary_analyse")
      )
     )
    )

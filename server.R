@@ -45,6 +45,13 @@ shinyServer(function(input, output,session) {
     }
   })
   
+  output$summary_current_sensitivity <- renderText({ 
+    
+    if (input$sensitivity == TRUE)
+    {
+      paste("Plese refer to Guttal et al. (2016), for information on how to interpret sensitivity analysis.")
+    }
+    })
   output$ews_current <- renderPlot({
     
     market = Stock_Market[as.numeric(input$current_market)]
@@ -149,26 +156,27 @@ shinyServer(function(input, output,session) {
       paste("The system is exhibiting strong trends of increasing variability. One must check",
             "if these trends die away soon or whether they persist. All major stock market crashes",
             "were preceded by strong trends of increasing variability in the past, but there could",
-            "also be chances of false alarms.", sep = " ")
+            "also be chances of false alarms. This is an automatically generated message.", sep = " ")
     }
     else if (kt_last$var > 0.5 || kt_last$spec > 0.5)
     {
       paste("The system is showing increasing trends in variability but the strength is",
-            "moderate. If these trends become stronger, there could be a possibility of",
-            "systemic risk.",sep = " ") 
+            "moderate. If these trends become stronger (Kendall-tau values more than 0.85 or so), there could be a possibility of",
+            "systemic risk. Therefore, one must check these trends again to see if the strength",
+            "of rising variability, as denoted by Kendall-tau, going to increase further. This is an automatically generated message.",sep = " ") 
     }
     else if (kt_last$var > -0.5 & kt_last$spec > -0.5 )
     {
       paste("The current trends of variability for variance and power-spectrum are relatively",
             "weak. Such trends in the major markets such as DJI, SP500 and NASDAQ in the past",
             "occur frequently and are indicative of a relatively stable state away from",
-            "a crash",sep = " ") 
+            "a crash. This is an automatically generated message.",sep = " ") 
     }
     else
     {
       paste("The system is showing reducing variability. Such trends in the major",
             "markets such as DJI, SP500 and NASDAQ in the past occur frequently and",
-            "are indicative of a relatively stable state away from a crash.",sep = " ")
+            "are indicative of a relatively stable state away from a crash. This is an automatically generated message.",sep = " ")
     }
   })
 

@@ -1,10 +1,8 @@
 **Background**: In the manuscript  [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198), we applied ideas of catastrophic transitions and their early warning signals to financial market data. Catastrophic transitions occur when systems are near a threshold or tipping point of a system. Another popular name for such abrupt transitions are critical transitions. 
 
-Theories make two key predictions about systems approaching an abrupt critical transition: 
-
-     * A slowed response to perturbations (also called critical slowing down) 
-     
-     * Rising fluctuations in their states
+Theories make two key predictions about systems approaching an abrupt critical transition:   
+1. A slowed response to perturbations (also called critical slowing down)  
+2. Rising fluctuations in their states
 
 These trends occur before catastrophic transitions and hence may serve as early warning signals. The above tools were largely developed in the ecology, climatic sciences and complex systems literature and have been successfully empirically tested as well. We set out to test these predictions in a few key financial market data from the US and Europe (DJI, S&P 500, NASDAQ, FTSE and DAX).
 
