@@ -184,7 +184,7 @@ ews <- function(residuals, l_rw)
   avgspec_residuals=numeric(N)
   #Apply rolling window to residuals.
   #Residual data analysis.
-  registerDoParallel(cores = 4)
+  registerDoParallel(cores = 7)
   ### Parallelized for loop
   r = foreach(i = 1:(N-l_rw+1)) %dopar% 
   {
