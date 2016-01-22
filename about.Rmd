@@ -1,10 +1,10 @@
 **About the App**: This RShiny App is a supplement to the manuscript [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198). 
 
-**Authors**: [Nikunj Goel](http://eeb.yale.edu/people/graduate-students/nikunj-goel) (1,2) and [Vishwesha Guttal](https://twitter.com/vishuguttal) (2)
+**Authors**: [Nikunj Goel](http://eeb.yale.edu/people/graduate-students/nikunj-goel) (1,2) and [Vishwesha Guttal](https://twitter.com/vishuguttal) (1)
 
 **Affiliations**: (1) Centre for Ecological Sciences, Indian Institute of Science, Bengaluru, India. (2) Department of Ecology and Evolutionary Biology,Yale University, 06511, New Haven, USA. 
 
-**Collaborator**: Srinivas Raghavendra, Cairnes School of Business & Economics and the Whitaker Institute at National University of Ireland (NUI), Galway, Ireland.
+**Scientific Collaborator**: Srinivas Raghavendra, Cairnes School of Business & Economics and the Whitaker Institute at National University of Ireland (NUI), Galway, Ireland.
 
 **Website**: [TEE-Lab](https://teelabiisc.wordpress.com/research/dynamics-of-financial-markets/)
 

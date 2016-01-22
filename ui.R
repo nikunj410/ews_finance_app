@@ -21,8 +21,8 @@ shinyUI
      tabPanel("DJI",
       fluidRow
       ( 
-       column(5,img(src="dji.jpg", height = 634, width = 475, align = "center")),
-       column(4,includeText("caption_dji.txt"))
+       column(7,img(src="dji.jpg", height = 634, width = 475, align = "center")),
+       column(5,includeText("caption_dji.txt"))
       )
      ), 
      
@@ -45,8 +45,8 @@ shinyUI
      tabPanel("DAX and FTSE",
       fluidRow
       ( 
-       column(5,img(src="dax&ftse.jpg", height = 634, width = 475, align = "center")),
-       column(4,includeText("caption_dax_ftse.txt"))
+       column(7,img(src="dax&ftse.jpg", height = 634, width = 475, align = "center")),
+       column(5,includeText("caption_dax_ftse.txt"))
       )
      )
     )

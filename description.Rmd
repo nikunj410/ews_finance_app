@@ -1,6 +1,14 @@
-**Background**: In the manuscript  [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198), we applied ideas of tipping points and early warning signals of critical transitions. These tools were developed in the ecology, climatic sciences and complex systems literature. Theories make two key predictions about systems approaching an abrupt transitions: They exhibit (a) slowed response to perturbations and (b) rising fluctuations in their states. These trends occur before abrupt transitions and hence may serve as early warning signals. We set out to test these predictions to see if there are early warning signals of financial meltdowns. 
+**Background**: In the manuscript  [Guttal, et al, 2016, PLOS ONE](http://dx.plos.org/10.1371/journal.pone.0144198), we applied ideas of catastrophic transitions and their early warning signals to financial market data. Catastrophic transitions occur when systems are near a threshold or tipping point of a system. Another popular name for such abrupt transitions are critical transitions. 
 
-Our key results were that critical slowing down, a key indicator of critical transitions, did not occur prior to any of the crashes that we analyzed. However, stock markets exhibited rising variability (as measured by variance and power-spectrum at low-frequencies of the stock market data) prior to all the financial meltdownswe analyzed. We argued that this can be explained by strong stochasticity in financial markets that could drive a crash even when the system is far away from tipping points. 
+Theories make two key predictions about systems approaching an abrupt critical transition: 
+
+     * A slowed response to perturbations (also called critical slowing down) 
+     
+     * Rising fluctuations in their states
+
+These trends occur before catastrophic transitions and hence may serve as early warning signals. The above tools were largely developed in the ecology, climatic sciences and complex systems literature and have been successfully empirically tested as well. We set out to test these predictions in a few key financial market data from the US and Europe (DJI, S&P 500, NASDAQ, FTSE and DAX).
+
+**Key Results**: Our key results were that critical slowing down, a key indicator of critical transitions that occur near tipping points, did not occur prior to any of the crashes that we analyzed. However, stock markets exhibited rising variability (as measured by variance and power-spectrum at low-frequencies of the stock market data) prior to all the financial meltdownswe analyzed. We argued that this can be explained by strong stochasticity in financial markets that could drive a crash even when the system is far away from tipping points. 
 
 **Historical Meltdowns** tabs show results of analysis of Dow Jones Index, S&P 500, NASDAQ, DAX (German) and FTSE (UK) markets. 
 
